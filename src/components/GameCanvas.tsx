@@ -6,7 +6,13 @@ import { GAME_CONFIG, LEVELS, Level } from '../utils/constants';
 interface GameCanvasProps {
   scrollY?: number;
   horizontalPosition?: number;
+  onPolaroidHover?: (data: null | {
+    image: string;
+    title: string;
+    text: string;
+  }) => void;
 }
+
 
 interface Player {
   x: number;
@@ -86,7 +92,11 @@ interface BackgroundPhoto {
  * Composant Canvas principal pour le jeu "LIGNES DE VIE"
  * Bonhomme qui parcourt un chemin narratif
  */
-export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasProps) {
+export function GameCanvas({
+  scrollY = 0,
+  horizontalPosition = 0,
+  onPolaroidHover,
+}: GameCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: GAME_CONFIG.canvasHeight });
   
@@ -380,7 +390,9 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
     
     const handleMouseLeave = () => {
       mouseRef.current.isOver = false;
+      onPolaroidHover?.(null);
     };
+    
     
     canvas.addEventListener('mousemove', handleMouseMove);
     canvas.addEventListener('mouseleave', handleMouseLeave);
@@ -446,7 +458,10 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
   // Fonction de rendu stylée
   const renderGame = (ctx: CanvasRenderingContext2D, width: number, height: number, player: Player) => {
     const centerY = height / 2;
-    
+
+    let isHoveringAnyPolaroid = false;    
+
+
     // Calculer la progression globale (0 à 1)
     const totalWorldWidth = LEVELS.reduce((sum, level) => sum + level.width, 0);
     const globalProgress = Math.min(1, worldOffsetRef.current / totalWorldWidth);
@@ -572,6 +587,11 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       const photoX = photo.worldX - worldOffsetRef.current + width / 2;
       const photoY = photo.worldY;
       
+      if (!isHoveringAnyPolaroid) {
+        onPolaroidHover?.(null);
+      }
+
+
       // Garder les photos visibles extrêmement longtemps (5000px au lieu de 400px)
       if (photoX < -photo.width - 5000 || photoX > width + 5000) return;
       
@@ -580,6 +600,10 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       const polaroidBottomPadding = 40;
       const polaroidWidth = photo.width + polaroidPadding * 2;
       const polaroidHeight = photo.height + polaroidPadding + polaroidBottomPadding;
+
+
+
+
       
       // Calculer la distance entre le joueur et la photo pour l'effet d'écriture
       const distanceToPlayer = Math.abs(worldOffsetRef.current - photo.worldX);
@@ -623,6 +647,35 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       // Animation de flottement subtile
       const floatOffset = Math.sin(Date.now() * 0.001 + parseFloat(photo.id.slice(1))) * 8;
       const finalPhotoY = photoY + floatOffset;
+
+      // ===============================
+// HOVER POLAROID (VERSION SAFE)
+// ===============================
+if (mouseRef.current.isOver && onPolaroidHover) {
+  const mx = mouseRef.current.x;
+  const my = mouseRef.current.y;
+
+  const left = photoX - polaroidWidth / 2;
+  const right = photoX + polaroidWidth / 2;
+  const top = finalPhotoY - polaroidHeight / 2;
+  const bottom = finalPhotoY + polaroidHeight / 2;
+
+  const isHover =
+    mx >= left &&
+    mx <= right &&
+    my >= top &&
+    my <= bottom;
+
+  if (isHover) {
+    isHoveringAnyPolaroid = true; 
+    onPolaroidHover({
+      image: photo.imageUrl,
+      title: photo.title,
+      text: photo.text,
+    });
+  }
+}
+
       
       // Rotation subtile basée sur le côté
       const rotationAngle = photo.side === 'left' ? -0.03 : 0.03;

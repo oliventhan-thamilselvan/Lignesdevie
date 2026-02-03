@@ -3,12 +3,27 @@ import { HorizontalExperience } from './components/HorizontalExperience';
 import { GameCanvas } from './components/GameCanvas';
 import { GameHUD } from './components/GameHUD';
 import { EndScene } from './components/EndScene';
+import { PolaroidHoverOverlay } from './components/PolaroidHoverOverlay';
+
 import { useScrollProgress } from './hooks/useScrollProgress';
 import { useHorizontalScroll } from './hooks/useHorizontalScroll';
 import { useAudioBus } from './hooks/useAudioBus';
+
 import { TOTAL_WIDTH, LEVELS } from './utils/constants';
 
 export default function App() {
+  /* =======================
+     POLAROID HOVER
+  ======================= */
+  const [hoveredPolaroid, setHoveredPolaroid] = useState<null | {
+    image: string;
+    title: string;
+    text: string;
+  }>(null);
+
+  /* =======================
+     SCROLL & AUDIO
+  ======================= */
   const { progress, scrollY } = useScrollProgress();
   const horizontalPosition = useHorizontalScroll();
   const { initAudio, setAmbience } = useAudioBus();
@@ -17,7 +32,9 @@ export default function App() {
   const [introVisible, setIntroVisible] = useState(true);
   const [endVisible, setEndVisible] = useState(false);
 
-  // Niveau actuel
+  /* =======================
+     LEVEL
+  ======================= */
   const getCurrentLevel = () => {
     let acc = 0;
     for (const level of LEVELS) {
@@ -29,7 +46,9 @@ export default function App() {
 
   const currentLevel = getCurrentLevel();
 
-  // Init audio UNE FOIS
+  /* =======================
+     AUDIO INIT
+  ======================= */
   useEffect(() => {
     const init = () => {
       if (!audioReady) {
@@ -45,28 +64,31 @@ export default function App() {
     };
   }, [audioReady, initAudio]);
 
-  // Intro visible uniquement en haut
+  /* =======================
+     INTRO / END
+  ======================= */
   useEffect(() => {
     setIntroVisible(scrollY < 10);
   }, [scrollY]);
 
-  // End scene
   useEffect(() => {
     setEndVisible(progress >= 0.98);
   }, [progress]);
 
-  // Ambiance audio
   useEffect(() => {
     setAmbience(currentLevel.id);
   }, [currentLevel]);
 
+  /* =======================
+     RENDER
+  ======================= */
   return (
     <div className="relative bg-[var(--bg-deep)] text-[var(--text-bright)] overflow-x-hidden">
 
-      {/* Scroll spacer */}
+      {/* SCROLL SPACER */}
       <div style={{ height: `${TOTAL_WIDTH * 0.5}px` }} />
 
-      {/* EXPÉRIENCE */}
+      {/* EXPERIENCE BACKGROUND */}
       <div className="fixed inset-0 z-10">
         <HorizontalExperience
           horizontalPosition={horizontalPosition}
@@ -75,11 +97,14 @@ export default function App() {
         />
       </div>
 
+      {/* GAME CANVAS */}
       <GameCanvas
         scrollY={scrollY}
         horizontalPosition={horizontalPosition}
+        onPolaroidHover={setHoveredPolaroid}
       />
 
+      {/* HUD */}
       {!endVisible && (
         <GameHUD
           progress={progress}
@@ -87,7 +112,12 @@ export default function App() {
         />
       )}
 
-      {/* END SCENE — fond opaque, PAS de dégradé */}
+      {/* 🖼️ POLAROID HOVER OVERLAY */}
+      {hoveredPolaroid && (
+        <PolaroidHoverOverlay polaroid={hoveredPolaroid} />
+      )}
+
+      {/* END SCENE */}
       <div
         className={`fixed inset-0 z-40 bg-[var(--bg-deep)]
         transition-opacity duration-1000
@@ -103,19 +133,12 @@ export default function App() {
         ${introVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
       >
         <div className="text-center space-y-8 max-w-2xl px-8">
-          <h1
-            className="text-6xl md:text-8xl font-extralight tracking-widest"
-            style={{
-              textShadow: '0 0 40px rgba(255,255,255,0.3)',
-            }}
-          >
+          <h1 className="text-6xl md:text-8xl font-extralight tracking-widest">
             LIGNES DE VIE
           </h1>
-
           <p className="text-lg opacity-60">
             Une expérience interactive immersive
           </p>
-
           <div className="pt-12 animate-pulse-slow">
             <p className="text-sm opacity-40">
               Scroll pour commencer
