@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+:root {
+  --bg-deep: #0a0a0f;
+  --bg-dark: #12121a;
+  --bg-medium: #1a1a28;
+  --text-dim: #6b6b7f;
+  --text-medium: #a8a8b8;
+  --text-bright: #e8e8f0;
+  --accent-chaos: #d14545;
+  --accent-constraint: #8b4a9e;
+  --accent-displacement: #4a7c9e;
+  --accent-reconstruction: #5a9e6b;
+  --accent-light: #f4c542;
+  
+  --trail-glow: rgba(255, 255, 255, 0.8);
+  --particle-color: rgba(255, 255, 255, 0.6);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-bright);
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 200;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-weight: 200;
+}
+
+p {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+canvas {
+  display: block;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-dim);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-medium);
+}
+
+/* Smooth animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 1s ease-in-out;
+}
+
+.animate-pulse-slow {
+  animation: pulse 3s ease-in-out infinite;
+}
