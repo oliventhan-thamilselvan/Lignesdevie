@@ -21,6 +21,9 @@ export function GameHUD({ progress = 0, horizontalPosition = 0 }: GameHUDProps) 
     }
     return LEVELS[LEVELS.length - 1];
   }, [horizontalPosition]);
+
+  // 🔽 AJUSTEMENT VERTICAL DU TITRE (zone sûre)
+  const TITLE_BASE_TOP = '60%'; // ← change ici si tu veux encore plus bas
   
   return (
     <div className="fixed top-0 left-0 w-full z-30 pointer-events-none">
@@ -35,10 +38,10 @@ export function GameHUD({ progress = 0, horizontalPosition = 0 }: GameHUDProps) 
           }}
         />
       </div>
-      
+
       {/* Indicateur de niveau */}
       <div className="absolute top-8 left-8 space-y-2">
-        <div 
+        <div
           className="text-xs font-light tracking-widest uppercase opacity-60"
           style={{ color: currentLevel.color }}
         >
@@ -48,12 +51,15 @@ export function GameHUD({ progress = 0, horizontalPosition = 0 }: GameHUDProps) 
           {currentLevel.subtitle}
         </div>
       </div>
-      
-      {/* Phrase centrale */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
-        <h2 
-          className="text-2xl md:text-4xl font-light tracking-wide transition-all duration-700"
-          style={{ 
+
+      {/* 🔥 TITRE CENTRAL (DESCENDU) */}
+      <div
+        className="absolute left-1/2 -translate-x-1/2 text-center pointer-events-none transition-all duration-700"
+        style={{ top: TITLE_BASE_TOP }}
+      >
+        <h2
+          className="text-2xl md:text-4xl font-light tracking-wide"
+          style={{
             color: currentLevel.color,
             textShadow: `0 0 20px ${currentLevel.color}40`,
           }}
@@ -61,7 +67,7 @@ export function GameHUD({ progress = 0, horizontalPosition = 0 }: GameHUDProps) 
           {currentLevel.title}
         </h2>
       </div>
-      
+
       {/* Instructions (visible au début) */}
       {progress < 0.05 && (
         <div className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center animate-pulse-slow">

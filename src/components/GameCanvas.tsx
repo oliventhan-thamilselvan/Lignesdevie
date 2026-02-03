@@ -149,7 +149,7 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       worldX: 1100,
       worldY: 280,
       imageUrl: '/images/oli2.jpg',
-      title: 'Père décédé - 3 ans',
+      title: 'Père décédé à 3 ans',
       text: 'Une perte précoce qui a laissé un vide profond et durable',
       side: 'right',
       width: 280,
@@ -185,7 +185,7 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       worldX: 3200,
       worldY: 200,
       imageUrl: '/images/oli5.jpg',
-      title: 'France - 2014',
+      title: 'France en 2014',
       text: 'Un nouveau départ, sans repères mais plein d’espoir',
       side: 'left',
       width: 280,
@@ -1246,7 +1246,7 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       // Titre avec effet néon - couleur adaptative pour lisibilité
       ctx.save();
       ctx.shadowBlur = 20;
-      const quoteColor = globalProgress > 0.7 ? '#1A1A1A' : currentLevel.color;
+      const quoteColor = globalProgress > 0.7 ? '#FFFFFF' : currentLevel.color;
       ctx.shadowColor = globalProgress > 0.7 ? 'rgba(0, 0, 0, 0.3)' : currentLevel.color;
       ctx.fillStyle = quoteColor;
       ctx.font = '700 26px -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif';
