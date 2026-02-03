@@ -22,11 +22,8 @@ export function GameHUD({ progress = 0, horizontalPosition = 0 }: GameHUDProps) 
     return LEVELS[LEVELS.length - 1];
   }, [horizontalPosition]);
 
-  // 🔽 AJUSTEMENT VERTICAL DU TITRE (zone sûre)
-  const TITLE_BASE_TOP = '60%'; // ← change ici si tu veux encore plus bas
-  
   return (
-    <div className="fixed top-0 left-0 w-full z-30 pointer-events-none">
+    <div className="fixed top-0 left-0 w-full h-screen z-30 pointer-events-none">
       {/* Barre de progression */}
       <div className="absolute top-0 left-0 w-full h-1 bg-[var(--bg-dark)]">
         <div
@@ -42,33 +39,54 @@ export function GameHUD({ progress = 0, horizontalPosition = 0 }: GameHUDProps) 
       {/* Indicateur de niveau */}
       <div className="absolute top-8 left-8 space-y-2">
         <div
-          className="text-xs font-light tracking-widest uppercase opacity-60"
-          style={{ color: currentLevel.color }}
+          style={{
+            fontFamily: '"Inter", system-ui, sans-serif',
+            fontWeight: 300,
+            letterSpacing: '0.35em',
+            fontSize: '0.65rem',
+            textTransform: 'uppercase',
+            opacity: 0.6,
+            color: currentLevel.color,
+          }}
         >
           {currentLevel.name}
         </div>
-        <div className="text-sm opacity-40">
+
+        <div
+          style={{
+            fontFamily: '"Inter", system-ui, sans-serif',
+            fontSize: '0.8rem',
+            opacity: 0.4,
+          }}
+        >
           {currentLevel.subtitle}
         </div>
       </div>
 
-      {/* 🔥 TITRE CENTRAL (DESCENDU) */}
+      {/* 🧠 TITRE NARRATIF — EN BAS */}
       <div
-        className="absolute left-1/2 -translate-x-1/2 text-center pointer-events-none transition-all duration-700"
-        style={{ top: TITLE_BASE_TOP }}
+        className="absolute left-1/2 -translate-x-1/2 text-center transition-all duration-700"
+        style={{
+          bottom: '9vh', // ← ajuste ici (4–8vh recommandé)
+        }}
       >
         <h2
-          className="text-2xl md:text-4xl font-light tracking-wide"
           style={{
-            color: currentLevel.color,
-            textShadow: `0 0 20px ${currentLevel.color}40`,
+            fontFamily: '"Anton", sans-serif',
+            fontWeight: 400,
+            fontSize: 'clamp(2.2rem, 4.8vw, 4rem)',
+            letterSpacing: '0.25em',
+            lineHeight: 1.1,
+            color: '#b0b0b0',
+            opacity: 0.75,
+            textTransform: 'uppercase',
           }}
         >
           {currentLevel.title}
         </h2>
       </div>
 
-      {/* Instructions (visible au début) */}
+      {/* Instructions (début uniquement) */}
       {progress < 0.05 && (
         <div className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center animate-pulse-slow">
           <div className="text-sm opacity-60">

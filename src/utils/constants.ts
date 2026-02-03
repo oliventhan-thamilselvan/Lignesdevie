@@ -36,7 +36,7 @@ export const LEVELS: Level[] = [
     name: 'CHAOS',
     color: '#d14545',
     title: 'Naître dans le bruit.',
-    subtitle: 'Sri Lanka, 1990s',
+    subtitle: 'Tamil Eelam, 2004-2009',
     physics: {
       friction: 0.92,
       gravity: 0.3,

@@ -137,7 +137,7 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       worldX: 400,
       worldY: 200,
       imageUrl: '/images/oli1.jpg',
-      title: 'Né au Sri Lanka.',
+      title: 'Né en Asie du sud.',
       text: 'Une enfance marquée par la violence\net l’instabilité dès la naissance.',
       side: 'left',
       width: 280,
@@ -641,6 +641,7 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       ctx.shadowOffsetY = 20;
       
       // Cadre principal blanc pur
+      ctx.globalAlpha = 0.75;
       ctx.fillStyle = '#1d1e1f';
       ctx.fillRect(
         -polaroidWidth / 2,
@@ -648,6 +649,8 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
         polaroidWidth,
         polaroidHeight
       );
+
+      
       
       // Réinitialiser l'ombre
       ctx.shadowBlur = 0;
