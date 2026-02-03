@@ -657,38 +657,7 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       ctx.shadowOffsetX = 0;
       ctx.shadowOffsetY = 0;
       
-      // Bordure extérieure avec dégradé subtil
-      const borderGradient = ctx.createLinearGradient(
-        -polaroidWidth / 2, -polaroidHeight / 2,
-        polaroidWidth / 2, polaroidHeight / 2
-      );
-      borderGradient.addColorStop(0, currentLevel.color);
-      borderGradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.2)');
-      borderGradient.addColorStop(1, currentLevel.color);
-      
-      ctx.strokeStyle = borderGradient;
-      ctx.lineWidth = 3;
-      ctx.strokeRect(
-        -polaroidWidth / 2,
-        -polaroidHeight / 2,
-        polaroidWidth,
-        polaroidHeight
-      );
-      
-      // Glow coloré autour du polaroid
-      ctx.save();
-      ctx.globalAlpha = photo.revealProgress * 0.4;
-      ctx.shadowBlur = 40;
-      ctx.shadowColor = currentLevel.color;
-      ctx.strokeStyle = currentLevel.color;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(
-        -polaroidWidth / 2,
-        -polaroidHeight / 2,
-        polaroidWidth,
-        polaroidHeight
-      );
-      ctx.restore();
+
       
       // Dessiner l'image dans le cadre avec clip
       if (image.complete) {
@@ -889,18 +858,18 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
     }
     
     // Bonhomme stylisé
-    const size = 45;
+    const size = 35;
     const headRadius = size / 3;
     const bodyHeight = size / 2;
     
     // Aura du bonhomme
-    ctx.shadowBlur = 40;
+    ctx.shadowBlur = 10;
     ctx.shadowColor = currentLevel.color;
     
     // Halo
     const haloGradient = ctx.createRadialGradient(
       player.x, player.y, 0,
-      player.x, player.y, size * 1.5
+      player.x, player.y, size * 0.8
     );
     haloGradient.addColorStop(0, currentLevel.color.replace(')', ', 0.3)').replace('rgb', 'rgba'));
     haloGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
