@@ -55,7 +55,7 @@ export const LEVELS: Level[] = [
   {
     id: 'constraint',
     name: 'CONTRAINTE',
-    color: '#a8a8b8',
+    color: '#ffffff',
     title: 'Tenir dans le noir.',
     subtitle: '3 ans',
     physics: {
@@ -78,7 +78,7 @@ export const LEVELS: Level[] = [
   {
     id: 'displacement',
     name: 'DÉPLACEMENT',
-    color: '#6b6b7f',
+    color: '#ffffff',
     title: 'Trouver une sortie.',
     subtitle: 'Inde → France, 2014',
     physics: {
@@ -101,7 +101,7 @@ export const LEVELS: Level[] = [
   {
     id: 'reconstruction',
     name: 'RECONSTRUCTION',
-    color: '#1a1a28',
+    color: '#ffffff',
     title: 'Recommencer. Respirer.',
     subtitle: 'France, apprentissage',
     physics: {
