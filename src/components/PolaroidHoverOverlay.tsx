@@ -3,6 +3,7 @@ interface Props {
       image: string;
       title: string;
       text: string;
+      text2?: string;
     } | null;
   }
   
@@ -10,36 +11,66 @@ interface Props {
     if (!polaroid) return null;
   
     return (
-      <div className="fixed inset-0 z-40 pointer-events-none flex items-center justify-center">
+      <div
+        className="fixed inset-0 flex items-center justify-center"
+        style={{
+          pointerEvents: 'none',
+          zIndex: 99999,
+          isolation: 'isolate',
+        }}
+      >
         {/* FOND NOIR 75% */}
-        <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" />
+        <div
+          className="absolute inset-0"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)' }}
+        />
   
-        {/* CONTENU CENTRÉ */}
-        <div className="relative z-10 flex items-center gap-20 max-w-6xl w-full px-16">
-          {/* IMAGE */}
-          <div className="w-1/2 flex justify-center animate-fadeIn">
+        {/* CONTENEUR CENTRAL AVEC MARGES LARGES */}
+        <div
+          className="relative flex items-center w-full max-w-[1400px]"
+          style={{
+            paddingLeft: '6rem',
+            paddingRight: '6rem',
+            gap: '3rem',
+          }}
+        >
+          {/* IMAGE (PLUS GRANDE) */}
+          <div
+            className="flex-shrink-0"
+            style={{
+              width: '450px',
+            }}
+          >
             <img
               src={polaroid.image}
               alt={polaroid.title}
-              className="max-h-[70vh] object-contain shadow-2xl"
+              className="w-full max-h-[72vh] object-contain shadow-2xl rounded-xl"
             />
           </div>
   
-          {/* TEXTE */}
-          <div className="w-1/2 space-y-6 animate-fadeIn text-left">
+          {/* TEXTE (PLUS PETIT, PLUS AÉRÉ) */}
+          <div className="flex-1 space-y-4">
             <h2
-              className="text-4xl uppercase"
+              className="uppercase text-white"
               style={{
                 fontFamily: '"Anton", sans-serif',
-                letterSpacing: '0.15em',
-                opacity: 0.9,
+                fontSize: '2.1rem', // ⬅️ plus petit
+                letterSpacing: '0.18em',
+                opacity: 0.85,
               }}
             >
               {polaroid.title}
             </h2>
   
-            <p className="text-lg opacity-80 leading-relaxed max-w-md">
-              {polaroid.text}
+            <p
+              className="text-white leading-relaxed"
+              style={{
+                fontSize: '1rem', // ⬅️ plus petit
+                opacity: 0.85,
+                maxWidth: '520px',
+              }}
+            >
+              {polaroid.text2 || polaroid.text}
             </p>
           </div>
         </div>

@@ -75,12 +75,14 @@ interface VisualEffect {
   particles: { x: number; y: number; vx: number; vy: number; size: number; color: string }[];
 }
 
+// Interface BackgroundPhoto mise à jour avec text2
 interface BackgroundPhoto {
   id: string;
   worldX: number;
   worldY: number;
   imageUrl: string;
   text: string;
+  text2?: string;  // Nouveau champ optionnel pour le texte détaillé de l'overlay
   title: string;
   side: 'left' | 'right';
   width: number;
@@ -140,154 +142,167 @@ export function GameCanvas({
   const [visualEffects, setVisualEffects] = useState<VisualEffect[]>([]);
   const [score, setScore] = useState(0);
   
-  // Photos de fond avec narratif - utiliser useRef pour permettre les mutations directes
-  const backgroundPhotosRef = useRef<BackgroundPhoto[]>([
-    {
-      id: 'p1',
-      worldX: 400,
-      worldY: 200,
-      imageUrl: '/images/oli1.jpg',
-      title: 'Né en Asie du sud.',
-      text: 'Une enfance marquée par la violence\net l’instabilité dès la naissance.',
-      side: 'left',
-      width: 280,
-      height: 210,
-      revealProgress: 0,
-    },
-    {
-      id: 'p2',
-      worldX: 1100,
-      worldY: 280,
-      imageUrl: '/images/oli2.jpg',
-      title: 'Père décédé à 3 ans.',
-      text: 'Une perte précoce qui a laissé un\nvide profond et durable.',
-      side: 'right',
-      width: 280,
-      height: 210,
-      revealProgress: 0,
-    },
-    {
-      id: 'p3',
-      worldX: 1800,
-      worldY: 200,
-      imageUrl: '/images/oli3.jpg',
-      title: '3 ans de prison.',
-      text: 'Une période sombre, faite d’enfermement\net de survie.',
-      side: 'left',
-      width: 280,
-      height: 210,
-      revealProgress: 0,
-    },
-    {
-      id: 'p4',
-      worldX: 2500,
-      worldY: 260,
-      imageUrl: '/images/oli4.jpg',
-      title: 'Évasion vers l\'Inde.',
-      text: 'Une fuite risquée, guidée par l’instinct\nde vivre libre.',
-      side: 'right',
-      width: 280,
-      height: 210,
-      revealProgress: 0,
-    },
-    {
-      id: 'p5',
-      worldX: 3200,
-      worldY: 200,
-      imageUrl: '/images/oli5.jpg',
-      title: 'France en 2014.',
-      text: 'Un nouveau départ, sans repères mais\nplein d’espoir.',
-      side: 'left',
-      width: 280,
-      height: 210,
-      revealProgress: 0,
-    },
-    {
-      id: 'p6',
-      worldX: 3900,
-      worldY: 270,
-      imageUrl: '/images/oli6.jpg',
-      title: 'Apprentissage du français.',
-      text: 'Un combat quotidien pour comprendre,\nparler et s’intégrer.',
-      side: 'right',
-      width: 280,
-      height: 210,
-      revealProgress: 0,
-    },
-    {
-      id: 'p7',
-      worldX: 4650,
-      worldY: 200,
-      imageUrl: '/images/oli7.jpg',
-      title: 'Loin de ma mère.',
-      text: 'La séparation, car elle devait travailler\npour subvenir aux besoins.',
-      side: 'left',
-      width: 280,
-      height: 210,
-      revealProgress: 0,
-    },
-    {
-      id: 'p8',
-      worldX: 5350,
-      worldY: 250,
-      imageUrl: '/images/oli8.jpg',
-      title: 'Vivre tout seul.',
-      text: 'Grandir trop vite, apprendre à se\ndébrouiller sans soutien.',
-      side: 'right',
-      width: 280,
-      height: 210,
-      revealProgress: 0,
-    },
-    {
-      id: 'p9',
-      worldX: 6000,
-      worldY: 200,
-      imageUrl: '/images/oli9.jpg',
-      title: 'Perdu à l\'université.',
-      text: 'Absences, mauvaises décisions\net perte de sens.',
-      side: 'left',
-      width: 280,
-      height: 210,
-      revealProgress: 0,
-    },
-    {
-      id: 'p10',
-      worldX: 6650,
-      worldY: 260,
-      imageUrl: '/images/oli10.jpg',
-      title: 'Se reprendre en main.',
-      text: 'Prise de conscience et volonté de\nchanger de trajectoire.',
-      side: 'right',
-      width: 280,
-      height: 210,
-      revealProgress: 0,
-    },
-    {
-      id: 'p11',
-      worldX: 7300,
-      worldY: 200,
-      imageUrl: '/images/oli11.jpg',
-      title: 'Reconstruction.',
-      text: 'Bâtir une stabilité, une identité\net une confiance retrouvée.',
-      side: 'left',
-      width: 280,
-      height: 210,
-      revealProgress: 0,
-    },
-    {
-      id: 'p12',
-      worldX: 7900,
-      worldY: 240,
-      imageUrl: '/images/oli12.jpg',
-      title: 'Alternance au FCSM.',
-      text: 'Un rêve d’enfant devenu réalité :\ntravailler dans le football.',
-      side: 'right',
-      width: 280,
-      height: 210,
-      revealProgress: 0,
-    },
-  ]);
-  const backgroundPhotos = backgroundPhotosRef.current;
+// Photos de fond avec narratif - utiliser useRef pour permettre les mutations directes
+const backgroundPhotosRef = useRef<BackgroundPhoto[]>([
+  {
+    id: 'p1',
+    worldX: 400,
+    worldY: 200,
+    imageUrl: '/images/oli1.jpg',
+    title: 'Né en Asie du sud.',
+    text: 'Une enfance marquée par la violence\net l\'instabilité dès la naissance.',
+    text2: "Je suis né au Sri Lanka dans un contexte de guerre civile, où la violence, la peur et l\’instabilité faisaient partie du quotidien. Les familles vivaient sous la menace constante des combats et des déplacements forcés. Même sans en avoir pleinement conscience à l\’époque, cet environnement a marqué mes premières années. La guerre n\’était pas un événement ponctuel, mais une réalité permanente.",
+    side: 'left',
+    width: 280,
+    height: 210,
+    revealProgress: 0,
+  },
+  {
+    id: 'p2',
+    worldX: 1100,
+    worldY: 280,
+    imageUrl: '/images/oli2.jpg',
+    title: 'Père décédé à 3 ans.',
+    text: 'Une perte précoce qui a laissé un\nvide profond et durable.',
+    text2: "Mon père, S. P. Thamilselvan, était une figure politique importante du combat tamoul. Son engagement l\’exposait en permanence à la violence et aux représailles liées au conflit. Il est décédé alors que je n\’avais que trois ans. Ma mère était elle aussi combattante. Son engagement impliquait de lourds sacrifices, notamment l\’éloignement. Malgré la distance, elle est restée un modèle de courage, de résilience et de détermination.",
+    side: 'right',
+    width: 280,
+    height: 210,
+    revealProgress: 0,
+  },
+  {
+    id: 'p3',
+    worldX: 1800,
+    worldY: 200,
+    imageUrl: '/images/oli3.jpg',
+    title: '3 ans de prison.',
+    text: 'Une période sombre, faite d\'enfermement\net de survie.',
+    text2: "Très jeune, j\’ai connu l\’enfermement. J\’ai passé trois années en assignation à domicile dans des conditions difficiles, marquées par la peur et l\’injustice. Cette période a profondément marqué ma construction. J\’ai dû développer une force mentale pour survivre et ne pas perdre pied.",
+    side: 'left',
+    width: 280,
+    height: 210,
+    revealProgress: 0,
+  },
+  {
+    id: 'p4',
+    worldX: 2500,
+    worldY: 260,
+    imageUrl: '/images/oli4.jpg',
+    title: "Évasion vers l'Inde.",
+    text: "Une fuite risquée, guidée par l'instinct\nde vivre libre.",
+    text2: "L\’évasion a été un acte de survie. Quitter la prison signifiait risquer sa vie, mais rester revenait à accepter un avenir sans issue. L\’Inde a représenté une étape de transition. Ce n\’était pas encore la stabilité, mais une première respiration vers la liberté.",
+    side: 'right',
+    width: 280,
+    height: 210,
+    revealProgress: 0,
+  },
+  {
+    id: 'p5',
+    worldX: 3200,
+    worldY: 200,
+    imageUrl: '/images/oli5.jpg',
+    title: 'France en 2014.',
+    text: 'Un nouveau départ, sans repères mais\nplein d\'espoir.',
+    text2: "En 2014, j\’arrive en France sans papiers, sans repères et sans soutien. Je découvrais un pays totalement inconnu, avec ses codes et ses exigences. Malgré la peur et l\’incertitude, cette arrivée marquait aussi le début d\’une nouvelle chance. Pour la première fois, reconstruire ma vie semblait possible.",
+    side: 'left',
+    width: 280,
+    height: 210,
+    revealProgress: 0,
+  },
+  {
+    id: 'p6',
+    worldX: 3900,
+    worldY: 270,
+    imageUrl: '/images/oli6.jpg',
+    title: 'Apprentissage du français.',
+    text: 'Un combat quotidien pour comprendre,\nparler et s\'intégrer.',
+    text2: "Ne pas parler français était un frein majeur. Chaque échange, chaque démarche administrative devenait une épreuve. J\’ai appris la langue avec persévérance et patience. Le français est devenu progressivement un outil d\’intégration et d\’expression.",
+    side: 'right',
+    width: 280,
+    height: 210,
+    revealProgress: 0,
+  },
+  {
+    id: 'p7',
+    worldX: 4650,
+    worldY: 200,
+    imageUrl: '/images/oli7.jpg',
+    title: 'Loin de ma mère.',
+    text: 'La séparation, car elle devait travailler\npour subvenir aux besoins.',
+    text2: "Ma mère devait travailler pour subvenir à nos besoins. Cette situation m\’a obligé à vivre loin d\’elle pendant de longues périodes. Cette séparation a créé un manque affectif profond, mais elle m\’a aussi appris à gagner en autonomie très tôt.",
+    side: 'left',
+    width: 280,
+    height: 210,
+    revealProgress: 0,
+  },
+  {
+    id: 'p8',
+    worldX: 5350,
+    worldY: 250,
+    imageUrl: '/images/oli8.jpg',
+    title: 'Vivre tout seul.',
+    text: 'Grandir trop vite, apprendre à se\ndébrouiller sans soutien.',
+    text2: "Très jeune, j\’ai dû apprendre à vivre seul. Gérer le quotidien, prendre des décisions et faire face aux difficultés sans soutien. Cette solitude a été difficile, mais elle a forgé mon indépendance et ma capacité à avancer malgré les obstacles.",
+    side: 'right',
+    width: 280,
+    height: 210,
+    revealProgress: 0,
+  },
+  {
+    id: 'p9',
+    worldX: 6000,
+    worldY: 200,
+    imageUrl: '/images/oli9.jpg',
+    title: "Se perdre à l'université.",
+    text: 'Absences, mauvaises décisions\net perte de sens.',
+    text2: "À l\’université, sans cadre solide ni accompagnement, je me suis progressivement perdu. Je n\’étais pas prêt à gérer cette liberté. Je faisais des choix incohérents, sans vision claire de mon avenir. Cette période a été marquée par l\’égarement et le doute.",
+    side: 'left',
+    width: 280,
+    height: 210,
+    revealProgress: 0,
+  },
+  {
+    id: 'p10',
+    worldX: 6650,
+    worldY: 260,
+    imageUrl: '/images/oli10.jpg',
+    title: 'Se reprendre en main.',
+    text: 'Prise de conscience et volonté de\nchanger de trajectoire.',
+    text2: "Un moment de prise de conscience m\’a poussé à changer. J\’ai compris que je devais reprendre le contrôle de ma vie. J\’ai décidé de me discipliner, de me recentrer et de construire un projet plus cohérent et plus stable.",
+    side: 'right',
+    width: 280,
+    height: 210,
+    revealProgress: 0,
+  },
+  {
+    id: 'p11',
+    worldX: 7300,
+    worldY: 200,
+    imageUrl: '/images/oli11.jpg',
+    title: 'Reconstruction.',
+    text: 'Bâtir une stabilité, une identité\net une confiance retrouvée.',
+    text2: "La reconstruction s\’est faite progressivement. J\’ai appris à transformer mon passé en force plutôt qu\’en fardeau. Aujourd\’hui, je me sens plus stable, plus confiant et capable de me projeter sereinement dans l\’avenir.",
+    side: 'left',
+    width: 280,
+    height: 210,
+    revealProgress: 0,
+  },
+  {
+    id: 'p12',
+    worldX: 7900,
+    worldY: 240,
+    imageUrl: '/images/oli12.jpg',
+    title: 'Alternance au FCSM.',
+    text: 'Un rêve d\'enfant devenu réalité :\ntravailler dans le football.',
+    text2: "Intégrer un club de football professionnel en alternance a été une immense fierté. Le football représentait un rêve d\’enfant. Ce parcours symbolise l\’aboutissement de nombreuses années d\’efforts. Il incarne la persévérance, l\’intégration et la réussite malgré un départ très difficile.",
+    side: 'right',
+    width: 280,
+    height: 210,
+    revealProgress: 0,
+  },
+]);
+const backgroundPhotos = backgroundPhotosRef.current;
+  
   
   // Phrases inspirantes pour la fin
   const inspirationalQuotes = [
@@ -666,14 +681,14 @@ if (mouseRef.current.isOver && onPolaroidHover) {
     my >= top &&
     my <= bottom;
 
-  if (isHover) {
-    isHoveringAnyPolaroid = true; 
-    onPolaroidHover({
-      image: photo.imageUrl,
-      title: photo.title,
-      text: photo.text,
-    });
-  }
+    if (isHover) {
+      isHoveringAnyPolaroid = true; 
+      onPolaroidHover({
+        image: photo.imageUrl,
+        title: photo.title,
+        text2: photo.text2,  // Nouveau champ
+      });
+    }
 }
 
       
