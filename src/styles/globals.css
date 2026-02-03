@@ -8,10 +8,10 @@
   --text-dim: #6b6b7f;
   --text-medium: #a8a8b8;
   --text-bright: #e8e8f0;
-  --accent-chaos: #d14545;
-  --accent-constraint: #8b4a9e;
-  --accent-displacement: #4a7c9e;
-  --accent-reconstruction: #5a9e6b;
+  --accent-chaos: #e8e8f0;
+  --accent-constraint: #a8a8b8;
+  --accent-displacement: #6b6b7f;
+  --accent-reconstruction: #1a1a28;
   --accent-light: #f4c542;
   
   --trail-glow: rgba(255, 255, 255, 0.8);
