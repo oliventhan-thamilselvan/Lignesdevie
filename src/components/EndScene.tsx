@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { DreamAI } from './DreamAI';
 
 interface EndSceneProps {
   isVisible?: boolean;
@@ -43,25 +44,15 @@ export function EndScene({ isVisible = false }: EndSceneProps) {
         </p>
         
         <p className="text-base opacity-60 animate-fadeIn" style={{ animationDelay: '1s' }}>
-          Alternance • Club de football professionnel • 2024-2026
+        Oliventhan Thamilselvan • Strat UX • 2022-2026
         </p>
         
-        {/* Stade abstrait (placeholder) */}
-        <div 
-          className="w-full h-64 rounded-lg overflow-hidden animate-fadeIn"
-          style={{ animationDelay: '1.5s' }}
-        >
-          <div 
-            className="w-full h-full bg-gradient-to-b from-transparent via-[var(--accent-light)] to-transparent opacity-20"
-            style={{
-              backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 10px, rgba(244, 197, 66, 0.1) 10px, rgba(244, 197, 66, 0.1) 20px)',
-            }}
-          />
-        </div>
+        <DreamAI />
+
         
         {/* Credits discrets */}
         <div className="pt-12 text-sm opacity-40 animate-fadeIn" style={{ animationDelay: '2s' }}>
-          <p>Projet de fin d'études BUT MMI</p>
+          <p>Projet individuel • S6 BUT MMI</p>
           <p className="mt-2">Réenchanter le monde</p>
         </div>
       </div>
