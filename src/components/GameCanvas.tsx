@@ -1218,10 +1218,10 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       // Titre avec effet néon - couleur adaptative pour lisibilité
       ctx.save();
       ctx.shadowBlur = 20;
-      const quoteColor = globalProgress > 0.7 ? '#FFFFFF' : currentLevel.color;
+      const quoteColor = globalProgress > 0.7 ? '#f9d05d' : currentLevel.color;
       ctx.shadowColor = globalProgress > 0.7 ? 'rgba(0, 0, 0, 0.3)' : currentLevel.color;
       ctx.fillStyle = quoteColor;
-      ctx.font = '700 26px -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif';
+      ctx.font = '700 20px "Permanent Marker", cursive';
       ctx.letterSpacing = '1.5px';
       
       const titleLength = quote.text.length;

@@ -47,7 +47,7 @@ export function DreamAI() {
       <h2
   style={{
     marginBottom: '2rem',
-    fontFamily: '"Playfair Display", Georgia, serif',
+    fontFamily: '"Permanent Marker", cursive',
     fontWeight: 200,
     letterSpacing: '0.12em',
     lineHeight: 1.3,

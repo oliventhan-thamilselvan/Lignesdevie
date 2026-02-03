@@ -67,18 +67,18 @@ export function GameHUD({ progress = 0, horizontalPosition = 0 }: GameHUDProps) 
       <div
         className="absolute left-1/2 -translate-x-1/2 text-center transition-all duration-700"
         style={{
-          bottom: '9vh', // ← ajuste ici (4–8vh recommandé)
+          top: '9.5vh', // ← ajuste ici (4–8vh recommandé)
         }}
       >
         <h2
           style={{
             fontFamily: '"Anton", sans-serif',
             fontWeight: 400,
-            fontSize: 'clamp(2.2rem, 4.8vw, 4rem)',
+            fontSize: 'clamp(1.1rem, 2.4vw, 2rem)',
             letterSpacing: '0.25em',
             lineHeight: 1.1,
-            color: '#b0b0b0',
-            opacity: 0.75,
+            color: currentLevel.color,
+            opacity: 0.50,
             textTransform: 'uppercase',
           }}
         >
@@ -91,6 +91,14 @@ export function GameHUD({ progress = 0, horizontalPosition = 0 }: GameHUDProps) 
         <div className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center animate-pulse-slow">
           <div className="text-sm opacity-60">
             Scroll pour avancer • Souris pour stabiliser
+          </div>
+        </div>
+      )}
+            {/* Instructions (début uniquement) */}
+            {progress > 0.05 && (
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center animate-pulse-slow">
+          <div className="text-sm opacity-60">
+            Attrape les étoiles pour remporter des points
           </div>
         </div>
       )}
