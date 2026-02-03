@@ -137,8 +137,8 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       worldX: 400,
       worldY: 200,
       imageUrl: '/images/oli1.jpg',
-      title: 'Né au Sri Lanka',
-      text: 'Une enfance marquée par la violence et l’instabilité dès la naissance.',
+      title: 'Né au Sri Lanka.',
+      text: 'Une enfance marquée par la violence\net l’instabilité dès la naissance.',
       side: 'left',
       width: 280,
       height: 210,
@@ -149,8 +149,8 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       worldX: 1100,
       worldY: 280,
       imageUrl: '/images/oli2.jpg',
-      title: 'Père décédé à 3 ans',
-      text: 'Une perte précoce qui a laissé un vide profond et durable',
+      title: 'Père décédé à 3 ans.',
+      text: 'Une perte précoce qui a laissé un\nvide profond et durable.',
       side: 'right',
       width: 280,
       height: 210,
@@ -161,8 +161,8 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       worldX: 1800,
       worldY: 200,
       imageUrl: '/images/oli3.jpg',
-      title: '3 ans de prison',
-      text: 'Une période sombre, faite d’enfermement et de survie',
+      title: '3 ans de prison.',
+      text: 'Une période sombre, faite d’enfermement\net de survie.',
       side: 'left',
       width: 280,
       height: 210,
@@ -173,8 +173,8 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       worldX: 2500,
       worldY: 260,
       imageUrl: '/images/oli4.jpg',
-      title: 'Évasion vers l\'Inde',
-      text: 'Une fuite risquée, guidée par l’instinct de vivre libre',
+      title: 'Évasion vers l\'Inde.',
+      text: 'Une fuite risquée, guidée par l’instinct\nde vivre libre.',
       side: 'right',
       width: 280,
       height: 210,
@@ -185,8 +185,8 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       worldX: 3200,
       worldY: 200,
       imageUrl: '/images/oli5.jpg',
-      title: 'France en 2014',
-      text: 'Un nouveau départ, sans repères mais plein d’espoir',
+      title: 'France en 2014.',
+      text: 'Un nouveau départ, sans repères mais\nplein d’espoir.',
       side: 'left',
       width: 280,
       height: 210,
@@ -197,8 +197,8 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       worldX: 3900,
       worldY: 270,
       imageUrl: '/images/oli6.jpg',
-      title: 'Apprentissage du français',
-      text: 'Un combat quotidien pour comprendre, parler et s’intégrer',
+      title: 'Apprentissage du français.',
+      text: 'Un combat quotidien pour comprendre,\nparler et s’intégrer.',
       side: 'right',
       width: 280,
       height: 210,
@@ -209,8 +209,8 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       worldX: 4600,
       worldY: 200,
       imageUrl: '/images/oli7.jpg',
-      title: 'Loin de ma mère',
-      text: 'La séparation, car elle devait travailler pour subvenir aux besoins',
+      title: 'Loin de ma mère.',
+      text: 'La séparation, car elle devait travailler\npour subvenir aux besoins.',
       side: 'left',
       width: 280,
       height: 210,
@@ -221,8 +221,8 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       worldX: 5300,
       worldY: 250,
       imageUrl: '/images/oli8.jpg',
-      title: 'Vivre tout seul',
-      text: 'Grandir trop vite, apprendre à se débrouiller sans soutien',
+      title: 'Vivre tout seul.',
+      text: 'Grandir trop vite, apprendre à se\ndébrouiller sans soutien.',
       side: 'right',
       width: 280,
       height: 210,
@@ -233,8 +233,8 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       worldX: 6000,
       worldY: 200,
       imageUrl: '/images/oli9.jpg',
-      title: 'Perdu à l\'université',
-      text: 'Désorientation, mauvaises décisions et perte de sens',
+      title: 'Perdu à l\'université.',
+      text: 'Absences, mauvaises décisions\net perte de sens.',
       side: 'left',
       width: 280,
       height: 210,
@@ -242,11 +242,11 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
     },
     {
       id: 'p10',
-      worldX: 6700,
+      worldX: 6650,
       worldY: 260,
       imageUrl: '/images/oli10.jpg',
-      title: 'Se reprendre en main',
-      text: 'Prise de conscience et volonté de changer de trajectoire',
+      title: 'Se reprendre en main.',
+      text: 'Prise de conscience et volonté de\nchanger de trajectoire.',
       side: 'right',
       width: 280,
       height: 210,
@@ -254,11 +254,11 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
     },
     {
       id: 'p11',
-      worldX: 7400,
+      worldX: 7300,
       worldY: 200,
       imageUrl: '/images/oli11.jpg',
-      title: 'Reconstruction',
-      text: 'Bâtir une stabilité, une identité et une confiance retrouvée',
+      title: 'Reconstruction.',
+      text: 'Bâtir une stabilité, une identité\net une confiance retrouvée.',
       side: 'left',
       width: 280,
       height: 210,
@@ -266,11 +266,11 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
     },
     {
       id: 'p12',
-      worldX: 8100,
+      worldX: 7900,
       worldY: 240,
       imageUrl: '/images/oli12.jpg',
-      title: 'Alternance au FCSM',
-      text: 'Un rêve d’enfant devenu réalité : travailler dans le football',
+      title: 'Alternance au FCSM.',
+      text: 'Un rêve d’enfant devenu réalité :\ntravailler dans le football.',
       side: 'right',
       width: 280,
       height: 210,
@@ -281,16 +281,16 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
   
   // Phrases inspirantes pour la fin
   const inspirationalQuotes = [
-    { text: "Ton passé ne définit pas ton futur", worldX: 8600, worldY: 180 },
-    { text: "Chaque obstacle est une opportunité", worldX: 9000, worldY: 280 },
-    { text: "La résilience est ton super-pouvoir", worldX: 9400, worldY: 200 },
-    { text: "Crois en tes rêves, même les plus fous", worldX: 9800, worldY: 260 },
-    { text: "Tu es plus fort que tu ne le penses", worldX: 10200, worldY: 220 },
-    { text: "L'échec n'est qu'une étape vers la réussite", worldX: 10600, worldY: 190 },
-    { text: "Ose rêver grand, ose agir maintenant", worldX: 11000, worldY: 270 },
-    { text: "Ta différence est ta plus grande force", worldX: 11400, worldY: 210 },
-    { text: "Chaque jour est une nouvelle chance", worldX: 11800, worldY: 240 },
-    { text: "N'abandonne jamais, jamais, jamais", worldX: 12200, worldY: 200 },
+    { text: "Ton passé ne définit pas ton futur", worldX: 8500, worldY: 180 },
+    { text: "Chaque obstacle est une opportunité", worldX: 8700, worldY: 280 },
+    { text: "La résilience est ton super-pouvoir", worldX: 9000, worldY: 200 },
+    { text: "Crois en tes rêves, même les plus fous", worldX: 9300, worldY: 260 },
+    { text: "Tu es plus fort que tu ne le penses", worldX: 9600, worldY: 220 },
+    { text: "L'échec n'est qu'une étape vers la réussite", worldX: 9900, worldY: 190 },
+    { text: "Ose rêver grand, ose agir maintenant", worldX: 10200, worldY: 270 },
+    { text: "Ta différence est ta plus grande force", worldX: 10500, worldY: 210 },
+    { text: "Chaque jour est une nouvelle chance", worldX: 10800, worldY: 240 },
+    { text: "N'abandonne jamais, jamais, jamais", worldX: 11100, worldY: 200 },
   ];
   
   // Cache pour les images
@@ -583,7 +583,7 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       
       // Calculer la distance entre le joueur et la photo pour l'effet d'écriture
       const distanceToPlayer = Math.abs(worldOffsetRef.current - photo.worldX);
-      const revealDistance = 800; // Distance à laquelle le texte commence à s'écrire - réduite pour apparition plus tardive
+      const revealDistance = 100; // Distance à laquelle le texte commence à s'écrire - réduite pour apparition plus tardive
       
       // Calculer la progression de révélation (0 à 1)
       let newRevealProgress = 0;
@@ -598,13 +598,13 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       
       // Vérifier si le texte sort de l'écran pour la disparition TRÈS PROGRESSIVE
       // Le texte est à droite du polaroid, donc on vérifie s'il sort à gauche
-      const textX = photoX + polaroidWidth / 2 + 60;
-      const fadeOutStartX = -1500; // Commence à disparaître très loin
+      const textX = photoX + polaroidWidth / 2 + 30;
+      const fadeOutStartX = -6500; // Commence à disparaître très loin
       const fadeOutDistance = 2000; // Distance sur laquelle s'effectue le fade out (très long)
       
       if (textX < fadeOutStartX) {
         // Disparition TRÈS progressive sur une grande distance
-        const fadeProgress = Math.min(1, (fadeOutStartX - textX) / fadeOutDistance);
+        const fadeProgress = Math.min(2, (fadeOutStartX - textX) / fadeOutDistance);
         newRevealProgress = 1 - fadeProgress;
       }
       
@@ -826,7 +826,7 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       ctx.shadowColor = globalProgress < 0.5 ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.3)';
       
       // Séparer le texte en lignes
-      const lines = photo.text.split('\\\\\\\\n');
+      const lines = photo.text.split('\n');
       
       // Calculer le nombre total de caractères révélés
       const revealedChars = Math.floor(photo.text.length * photo.revealProgress);
@@ -1230,12 +1230,12 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       
       // Calculer la distance entre le joueur et la phrase pour l'effet d'écriture
       const distanceToPlayer = Math.abs(worldOffsetRef.current - quote.worldX);
-      const revealDistance = 600; // Distance à laquelle le texte commence à s'écrire
+      const revealDistance = 800; // Distance à laquelle le texte commence à s'écrire
       
       // Calculer la progression de révélation (0 à 1)
       let quoteRevealProgress = 0;
       if (distanceToPlayer < revealDistance) {
-        quoteRevealProgress = 1 - (distanceToPlayer / revealDistance);
+        quoteRevealProgress = 1.1 - (distanceToPlayer / revealDistance);
         quoteRevealProgress = Math.pow(quoteRevealProgress, 1.2); // Courbe plus douce
       }
       

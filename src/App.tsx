@@ -50,7 +50,7 @@ export default function App() {
   
   // Afficher la scène finale
   useEffect(() => {
-    if (progress >= 0.95) {
+    if (progress >= 1) {
       setShowEndScene(true);
     }
   }, [progress]);
