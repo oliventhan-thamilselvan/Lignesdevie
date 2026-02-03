@@ -206,7 +206,7 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
     },
     {
       id: 'p7',
-      worldX: 4600,
+      worldX: 4650,
       worldY: 200,
       imageUrl: '/images/oli7.jpg',
       title: 'Loin de ma mère.',
@@ -218,7 +218,7 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
     },
     {
       id: 'p8',
-      worldX: 5300,
+      worldX: 5350,
       worldY: 250,
       imageUrl: '/images/oli8.jpg',
       title: 'Vivre tout seul.',
@@ -284,12 +284,12 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
     { text: "Ton passé ne définit pas ton futur", worldX: 8500, worldY: 180 },
     { text: "Chaque obstacle est une opportunité", worldX: 8700, worldY: 280 },
     { text: "La résilience est ton super-pouvoir", worldX: 9000, worldY: 200 },
-    { text: "Crois en tes rêves, même les plus fous", worldX: 9300, worldY: 260 },
-    { text: "Tu es plus fort que tu ne le penses", worldX: 9600, worldY: 220 },
+    { text: "Crois en tes rêves, même les plus fous", worldX: 9300, worldY: 340 },
+    { text: "Tu es plus fort que tu ne le penses", worldX: 9600, worldY: 270 },
     { text: "L'échec n'est qu'une étape vers la réussite", worldX: 9900, worldY: 190 },
     { text: "Ose rêver grand, ose agir maintenant", worldX: 10200, worldY: 270 },
     { text: "Ta différence est ta plus grande force", worldX: 10500, worldY: 210 },
-    { text: "Chaque jour est une nouvelle chance", worldX: 10800, worldY: 240 },
+    { text: "Chaque jour est une nouvelle chance", worldX: 10800, worldY: 260 },
     { text: "N'abandonne jamais, jamais, jamais", worldX: 11100, worldY: 200 },
   ];
   
@@ -641,7 +641,7 @@ export function GameCanvas({ scrollY = 0, horizontalPosition = 0 }: GameCanvasPr
       ctx.shadowOffsetY = 20;
       
       // Cadre principal blanc pur
-      ctx.fillStyle = '#FFFFFF';
+      ctx.fillStyle = '#1d1e1f';
       ctx.fillRect(
         -polaroidWidth / 2,
         -polaroidHeight / 2,

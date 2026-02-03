@@ -3,128 +3,127 @@ import { HorizontalExperience } from './components/HorizontalExperience';
 import { GameCanvas } from './components/GameCanvas';
 import { GameHUD } from './components/GameHUD';
 import { EndScene } from './components/EndScene';
-import { LevelPhotos } from './components/LevelPhotos';
 import { useScrollProgress } from './hooks/useScrollProgress';
 import { useHorizontalScroll } from './hooks/useHorizontalScroll';
 import { useAudioBus } from './hooks/useAudioBus';
 import { TOTAL_WIDTH, LEVELS } from './utils/constants';
 
-/**
- * LIGNES DE VIE
- * Expérience interactive immersive - Projet BUT MMI
- */
 export default function App() {
   const { progress, scrollY } = useScrollProgress();
   const horizontalPosition = useHorizontalScroll();
   const { initAudio, setAmbience } = useAudioBus();
-  
-  const [hasStarted, setHasStarted] = useState(false);
-  const [showEndScene, setShowEndScene] = useState(false);
-  
-  // Déterminer le niveau actuel
+
+  const [audioReady, setAudioReady] = useState(false);
+  const [introVisible, setIntroVisible] = useState(true);
+  const [endVisible, setEndVisible] = useState(false);
+
+  // Niveau actuel
   const getCurrentLevel = () => {
-    let accumulatedWidth = 0;
+    let acc = 0;
     for (const level of LEVELS) {
-      if (horizontalPosition < accumulatedWidth + level.width) {
-        return level;
-      }
-      accumulatedWidth += level.width;
+      if (horizontalPosition < acc + level.width) return level;
+      acc += level.width;
     }
     return LEVELS[LEVELS.length - 1];
   };
-  
+
   const currentLevel = getCurrentLevel();
-  
-  // Initialiser l'audio au premier clic
+
+  // Init audio UNE FOIS
   useEffect(() => {
-    const handleFirstInteraction = () => {
-      if (!hasStarted) {
+    const init = () => {
+      if (!audioReady) {
         initAudio();
-        setHasStarted(true);
+        setAudioReady(true);
       }
     };
-    
-    window.addEventListener('click', handleFirstInteraction, { once: true });
-    return () => window.removeEventListener('click', handleFirstInteraction);
-  }, [hasStarted, initAudio]);
-  
-  // Afficher la scène finale
+    window.addEventListener('click', init, { once: true });
+    window.addEventListener('wheel', init, { once: true });
+    return () => {
+      window.removeEventListener('click', init);
+      window.removeEventListener('wheel', init);
+    };
+  }, [audioReady, initAudio]);
+
+  // Intro visible uniquement en haut
   useEffect(() => {
-    if (progress >= 1) {
-      setShowEndScene(true);
-    }
+    setIntroVisible(scrollY < 10);
+  }, [scrollY]);
+
+  // End scene
+  useEffect(() => {
+    setEndVisible(progress >= 0.98);
   }, [progress]);
-  
-  // Changer l'ambiance audio selon le niveau
+
+  // Ambiance audio
   useEffect(() => {
     setAmbience(currentLevel.id);
   }, [currentLevel]);
-  
+
   return (
-    <div className="relative bg-[var(--bg-deep)] text-[var(--text-bright)]">
-      {/* Spacer pour créer le scroll vertical */}
+    <div className="relative bg-[var(--bg-deep)] text-[var(--text-bright)] overflow-x-hidden">
+
+      {/* Scroll spacer */}
       <div style={{ height: `${TOTAL_WIDTH * 0.5}px` }} />
-      
-      {/* Expérience horizontale (fixed) */}
-      <div className="fixed top-0 left-0 w-full h-screen">
+
+      {/* EXPÉRIENCE */}
+      <div className="fixed inset-0 z-10">
         <HorizontalExperience
           horizontalPosition={horizontalPosition}
           playerX={horizontalPosition}
           scrollPosition={scrollY}
         />
       </div>
-      
-      {/* Canvas de jeu */}
+
       <GameCanvas
         scrollY={scrollY}
         horizontalPosition={horizontalPosition}
       />
-      
-      {/* HUD */}
-      <GameHUD
-        progress={progress}
-        horizontalPosition={horizontalPosition}
-      />
-      
-      {/* Photos et textes du niveau actuel */}
-      {hasStarted && !showEndScene && (
-        <LevelPhotos
-          levelId={currentLevel.id}
-          levelName={currentLevel.name}
-          levelTitle={currentLevel.title}
-          levelSubtitle={currentLevel.subtitle}
+
+      {!endVisible && (
+        <GameHUD
+          progress={progress}
+          horizontalPosition={horizontalPosition}
         />
       )}
-      
-      {/* Scène finale */}
-      <EndScene isVisible={showEndScene} />
-      
-      {/* Intro overlay (disparaît au premier scroll) */}
-      {!hasStarted && progress === 0 && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--bg-deep)] transition-opacity duration-1000">
-          <div className="text-center space-y-8 max-w-2xl px-8">
-            <h1 
-              className="text-6xl md:text-8xl font-extralight tracking-widest"
-              style={{ 
-                color: 'var(--text-bright)',
-                textShadow: '0 0 40px rgba(255, 255, 255, 0.3)',
-              }}
-            >
-              LIGNES DE VIE
-            </h1>
-            
-            <p className="text-lg opacity-60">
-              Une expérience interactive immersive
+
+      {/* END SCENE — fond opaque, PAS de dégradé */}
+      <div
+        className={`fixed inset-0 z-40 bg-[var(--bg-deep)]
+        transition-opacity duration-1000
+        ${endVisible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+      >
+        <EndScene isVisible={endVisible} />
+      </div>
+
+      {/* INTRO */}
+      <div
+        className={`fixed inset-0 z-50 flex items-center justify-center
+        bg-[var(--bg-deep)] transition-opacity duration-1000
+        ${introVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+      >
+        <div className="text-center space-y-8 max-w-2xl px-8">
+          <h1
+            className="text-6xl md:text-8xl font-extralight tracking-widest"
+            style={{
+              textShadow: '0 0 40px rgba(255,255,255,0.3)',
+            }}
+          >
+            LIGNES DE VIE
+          </h1>
+
+          <p className="text-lg opacity-60">
+            Une expérience interactive immersive
+          </p>
+
+          <div className="pt-12 animate-pulse-slow">
+            <p className="text-sm opacity-40">
+              Scroll pour commencer
             </p>
-            
-            <div className="pt-12 animate-pulse-slow">
-              <p className="text-sm opacity-40">
-                Scroll pour commencer
-              </p>
-            </div>
           </div>
         </div>
-      )}
+      </div>
+
     </div>
   );
 }
