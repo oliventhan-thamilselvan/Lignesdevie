@@ -18,7 +18,7 @@ export default function App() {
   const [hoveredPolaroid, setHoveredPolaroid] = useState<null | {
     image: string;
     title: string;
-    text: string;
+    text2?: string;  // ⬅️ En optionnel
   }>(null);
 
   /* =======================

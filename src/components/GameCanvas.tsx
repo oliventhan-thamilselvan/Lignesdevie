@@ -9,7 +9,7 @@ interface GameCanvasProps {
   onPolaroidHover?: (data: null | {
     image: string;
     title: string;
-    text: string;
+    text2?: string;  // ⬅️ CHANGEMENT ICI
   }) => void;
 }
 
@@ -108,14 +108,14 @@ export function GameCanvas({
   // Chemin visuel
   const pathRef = useRef<PathSegment[]>([]);
   
-  // État du joueur
-  const playerRef = useRef<Player>({
-    x: 0,
-    y: 0,
-    velocityX: 0,
-    velocityY: 0,
-    trail: [],
-  });
+// État du joueur - MODIFIÉ
+const playerRef = useRef<Player>({
+  x: 0,
+  y: dimensions.height - 80, // En bas de l'écran
+  velocityX: 0,
+  velocityY: 0,
+  trail: [],
+});
   
   const mouseRef = useRef<Mouse>({ x: 0, y: 0, isOver: false });
   const [currentLevel, setCurrentLevel] = useState<Level>(LEVELS[0]);
@@ -352,16 +352,17 @@ const backgroundPhotos = backgroundPhotosRef.current;
       }
     }
   }, [dimensions, currentLevel]);
+ 
   
-  // Initialiser la position du joueur
-  useEffect(() => {
-    if (dimensions.width > 0 && dimensions.height > 0) {
-      const centerX = dimensions.width / 2;
-      const centerY = dimensions.height / 2;
-      playerRef.current.x = centerX;
-      playerRef.current.y = centerY;
-    }
-  }, [dimensions]);
+
+// Initialiser la position du joueur
+useEffect(() => {
+  if (dimensions.width > 0 && dimensions.height > 0) {
+    const centerX = dimensions.width / 2;
+    playerRef.current.x = centerX;
+    playerRef.current.y = dimensions.height - 80; // Fixe en bas
+  }
+}, [dimensions]);
   
   // Déterminer le niveau actuel
   useEffect(() => {
@@ -448,17 +449,7 @@ const backgroundPhotos = backgroundPhotosRef.current;
     // Suivre le scroll
     worldOffsetRef.current = horizontalPosition;
     
-    // Gestion de la position verticale du joueur (souris)
-    if (mouseRef.current.isOver) {
-      const targetY = mouseRef.current.y;
-      const diff = targetY - player.y;
-      player.y += diff * 0.05;
-    }
-    
-    const diffToCenter = centerY - player.y;
-    player.y += diffToCenter * 0.02;
-    
-    player.y = Math.max(80, Math.min(height - 80, player.y));
+
     
     // Trail
     player.trail.push({ x: player.x, y: player.y });
@@ -895,6 +886,8 @@ if (mouseRef.current.isOver && onPolaroidHover) {
       ctx.restore();
     });
     
+    
+
     // Trail lumineux du bonhomme
     if (player.trail.length > 1) {
       const trailGradient = ctx.createLinearGradient(
@@ -937,7 +930,7 @@ if (mouseRef.current.isOver && onPolaroidHover) {
     // Halo
     const haloGradient = ctx.createRadialGradient(
       player.x, player.y, 0,
-      player.x, player.y, size * 0.8
+      player.x, player.y, size * 0
     );
     haloGradient.addColorStop(0, currentLevel.color.replace(')', ', 0.3)').replace('rgb', 'rgba'));
     haloGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
@@ -998,154 +991,112 @@ if (mouseRef.current.isOver && onPolaroidHover) {
     ctx.shadowBlur = 0;
     ctx.globalAlpha = 1;
     
-    // COLLECTIBLES INTERACTIFS
-    collectibles.forEach((collectible) => {
-      if (collectible.collected) return;
-      
-      const collectibleX = collectible.worldX - worldOffsetRef.current + width / 2;
-      const collectibleY = collectible.worldY + Math.sin(Date.now() * 0.003 + parseFloat(collectible.id.slice(1))) * 10;
-      
-      if (collectibleX < -100 || collectibleX > width + 100) return;
-      
-      const size = 30;
-      
-      // Détection de collision avec le joueur
-      const dist = Math.hypot(collectibleX - player.x, collectibleY - player.y);
-      if (dist < 40) {
-        setCollectibles(prev => prev.map(c => 
-          c.id === collectible.id ? { ...c, collected: true } : c
-        ));
-        setScore(prev => prev + 10);
-        
-        // Créer effet visuel de collecte
-        const newEffect: VisualEffect = {
-          id: `collect_${Date.now()}`,
-          x: collectibleX,
-          y: collectibleY,
-          type: 'collect',
-          life: 0,
-          maxLife: 30,
-          particles: Array.from({ length: 15 }, () => ({
-            x: collectibleX,
-            y: collectibleY,
-            vx: (Math.random() - 0.5) * 8,
-            vy: (Math.random() - 0.5) * 8 - 2,
-            size: Math.random() * 4 + 2,
-            color: currentLevel.color
-          }))
-        };
-        setVisualEffects(prev => [...prev, newEffect]);
-        return;
-      }
-      
-      // Glow pulsant
-      const glowSize = size + Math.sin(Date.now() * 0.005) * 8;
-      ctx.shadowBlur = 30;
-      ctx.shadowColor = collectible.type === 'star' ? '#FFC700' : 
-                        collectible.type === 'heart' ? '#FF6B9D' :
-                        '#4ECDC4';
-      
-      ctx.globalAlpha = 0.4;
-      ctx.fillStyle = collectible.type === 'star' ? '#FFC700' : 
-                      collectible.type === 'heart' ? '#FF6B9D' :
-                      '#4ECDC4';
-      ctx.beginPath();
-      ctx.arc(collectibleX, collectibleY, glowSize, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.globalAlpha = 1;
-      
-      // Symbole géométrique professionnel
-      ctx.save();
-      ctx.shadowBlur = 15;
-      ctx.fillStyle = collectible.type === 'star' ? '#FFC700' : 
-                      collectible.type === 'heart' ? '#FF6B9D' :
-                      '#4ECDC4';
-      
-      // Dessiner un symbole géométrique selon le type
-      if (collectible.type === 'star') {
-        // Étoile géométrique à 5 branches
-        ctx.beginPath();
-        for (let i = 0; i < 5; i++) {
-          const angle = (i * 4 * Math.PI) / 5 - Math.PI / 2;
-          const x = collectibleX + Math.cos(angle) * 12;
-          const y = collectibleY + Math.sin(angle) * 12;
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.closePath();
-        ctx.fill();
-      } else if (collectible.type === 'heart') {
-        // Cercle simple pour cœur
-        ctx.beginPath();
-        ctx.arc(collectibleX, collectibleY, 10, 0, Math.PI * 2);
-        ctx.fill();
-      } else {
-        // Carré pour mémoire
-        ctx.fillRect(collectibleX - 10, collectibleY - 10, 20, 20);
-      }
-      
-      ctx.restore();
-      ctx.shadowBlur = 0;
-    });
+    // ============================================
+// LIGNE DE PROGRESSION EN BAS AVEC POINTS
+// ============================================
+
+// Position verticale de la ligne (en bas de l'écran)
+const lineY = height - 40;
+ctx.save();
+
+// Ligne principale
+ctx.strokeStyle = currentLevel.color;
+ctx.lineWidth = 2;
+ctx.globalAlpha = 0.7;
+ctx.beginPath();
+ctx.moveTo(0, lineY);
+ctx.lineTo(width, lineY);
+ctx.stroke();
+
+// Points pour chaque polaroid
+backgroundPhotos.forEach(photo => {
+  const photoX = photo.worldX - worldOffsetRef.current + width / 2;
+  
+  // Vérifier si le polaroid est dans la vue
+  if (photoX < -50 || photoX > width + 50) return;
+  
+  // Taille du point basée sur la proximité avec le joueur
+  const distanceToPlayer = Math.abs(worldOffsetRef.current - photo.worldX);
+  const proximity = Math.max(0, 1 - distanceToPlayer / 500);
+  const pointSize = 6 + proximity * 8;
+  
+  // Couleur du point (plus lumineux quand proche)
+  const pointAlpha = 0.4 + proximity * 0.6;
+  
+  ctx.save();
+  
+  // Effet de halo pour le point actif
+  if (proximity > 0.7) {
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = currentLevel.color;
+  }
+  
+  // Point extérieur
+  ctx.fillStyle = currentLevel.color.replace(')', `, ${pointAlpha})`).replace('rgb', 'rgba');
+  ctx.beginPath();
+  ctx.arc(photoX, lineY, pointSize, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Point intérieur lumineux
+  ctx.fillStyle = '#FFFFFF';
+  ctx.globalAlpha = 0.8;
+  ctx.beginPath();
+  ctx.arc(photoX, lineY, pointSize * 0.5, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Indicateur du numéro de phase (petit texte)
+  if (pointSize > 8) {
+    const phaseNumber = parseInt(photo.id.slice(1));
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = 'bold 10px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.globalAlpha = 0.9;
+    ctx.fillText(phaseNumber.toString(), photoX, lineY);
+  }
+  
+  // Ligne verticale reliant le point au polaroid (quand proche)
+  if (proximity > 0.3) {
+    const photoY = photo.worldY;
+    const photoScreenY = photoY + Math.sin(Date.now() * 0.001 + parseFloat(photo.id.slice(1))) * 8;
     
-    // ZONES INTERACTIVES
-    interactiveZones.forEach((zone) => {
-      const zoneX = zone.worldX - worldOffsetRef.current + width / 2;
-      const zoneY = zone.worldY;
-      
-      if (zoneX < -zone.width - 100 || zoneX > width + 100) return;
-      
-      // Détection si le joueur est dans la zone
-      const inZone = 
-        player.x >= zoneX - zone.width / 2 &&
-        player.x <= zoneX + zone.width / 2 &&
-        player.y >= zoneY - zone.height / 2 &&
-        player.y <= zoneY + zone.height / 2;
-      
-      setInteractiveZones(prev => prev.map(z =>
-        z.id === zone.id ? { ...z, active: inZone } : z
-      ));
-      
-      // Effet visuel de la zone
-      ctx.save();
-      ctx.globalAlpha = inZone ? 0.3 : 0.15;
-      
-      const zoneColor = zone.type === 'wind' ? '#6DD5FA' :       // Bleu cyan clair
-                        zone.type === 'gravity' ? '#A78BFA' :    // Violet doux
-                        zone.type === 'bounce' ? '#FFC700' :     // Or vif
-                        '#FF6B9D';                               // Rose corail
-      
-      const zoneGradient = ctx.createRadialGradient(
-        zoneX, zoneY, 0,
-        zoneX, zoneY, zone.width / 2
-      );
-      zoneGradient.addColorStop(0, zoneColor);
-      zoneGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-      
-      ctx.fillStyle = zoneGradient;
-      ctx.fillRect(
-        zoneX - zone.width / 2,
-        zoneY - zone.height / 2,
-        zone.width,
-        zone.height
-      );
-      
-      // Particules de zone
-      if (inZone) {
-        for (let i = 0; i < 5; i++) {
-          const px = zoneX + (Math.random() - 0.5) * zone.width;
-          const py = zoneY + (Math.random() - 0.5) * zone.height;
-          ctx.fillStyle = zoneColor;
-          ctx.globalAlpha = Math.random() * 0.5;
-          ctx.beginPath();
-          ctx.arc(px, py, 3, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-      
-      ctx.restore();
-      ctx.shadowBlur = 0;
-    });
+    ctx.strokeStyle = currentLevel.color;
+    ctx.lineWidth = 1;
+    ctx.globalAlpha = proximity * 0.3;
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath();
+    ctx.moveTo(photoX, lineY + pointSize);
+    ctx.lineTo(photoX, photoScreenY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+  
+  ctx.restore();
+});
+
+// Point pour la position actuelle du joueur
+const playerPointX = width / 2; // Le joueur est toujours au centre
+ctx.save();
+ctx.fillStyle = '#FFFFFF';
+ctx.shadowBlur = 20;
+ctx.shadowColor = currentLevel.color;
+ctx.beginPath();
+ctx.arc(playerPointX, lineY, 8, 0, Math.PI * 2);
+ctx.fill();
+
+// Animation pulsante pour le point du joueur
+const pulse = Math.sin(Date.now() * 0.005) * 3 + 12;
+ctx.globalAlpha = 0.3;
+ctx.beginPath();
+ctx.arc(playerPointX, lineY, pulse, 0, Math.PI * 2);
+ctx.fill();
+ctx.restore();
+
+ctx.restore();
+
+ 
+    
+    
     
     // EFFETS VISUELS
     visualEffects.forEach((effect) => {
