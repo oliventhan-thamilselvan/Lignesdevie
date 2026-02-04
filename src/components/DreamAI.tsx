@@ -1,33 +1,36 @@
 import { useState } from 'react';
 
-const DREAM_RESPONSES = [
-  "Les rêves demandent du temps et du courage. Continue d’avancer, même lentement.",
-  "Ton rêve est déjà en marche. Chaque pas compte.",
-  "Ce que tu désires façonne la personne que tu deviens.",
-  "Les lignes ne sont jamais droites, mais elles mènent toujours quelque part.",
-  "Même dans l’ombre, la lumière apprend à naître.",
-  "Avancer, c’est déjà réussir.",
-  "Ce que tu imagines aujourd’hui devient possible demain.",
-  "Ton rêve te ressemble plus que tu ne le penses.",
-];
+// URL de votre backend (changez si nécessaire)
+const BACKEND_URL = 'http://localhost:3001';
 
 export function DreamAI() {
   const [dream, setDream] = useState('');
   const [response, setResponse] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!dream.trim() || loading) return;
 
     setLoading(true);
     setResponse(null);
 
-    setTimeout(() => {
-      const random =
-        DREAM_RESPONSES[Math.floor(Math.random() * DREAM_RESPONSES.length)];
-      setResponse(random);
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/dream`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ dream: dream.trim() }),
+      });
+
+      const data = await res.json();
+      setResponse(data.response);
+    } catch (error) {
+      console.error('Erreur:', error);
+      setResponse("L'IA est momentanément indisponible. Ton rêve n'en reste pas moins précieux.");
+    } finally {
       setLoading(false);
-    }, 1200);
+    }
   };
 
   return (
@@ -43,26 +46,22 @@ export function DreamAI() {
         boxShadow: '0 0 60px rgba(244, 197, 66, 0.08)',
       }}
     >
-      {/* Question */}
       <h2
-  style={{
-    marginBottom: '2rem',
-    fontFamily: '"Permanent Marker", cursive',
-    fontWeight: 200,
-    letterSpacing: '0.12em',
-    lineHeight: 1.3,
-    color: 'var(--text-bright)',
-    textShadow: '0 0 20px rgba(244, 197, 66, 0.25)',
-  }}
->
-  Et toi ?
-  <br />
-  Quel est ton rêve ?
-</h2>
+        style={{
+          marginBottom: '2rem',
+          fontFamily: '"Permanent Marker", cursive',
+          fontWeight: 200,
+          letterSpacing: '0.12em',
+          lineHeight: 1.3,
+          color: 'var(--text-bright)',
+          textShadow: '0 0 20px rgba(244, 197, 66, 0.25)',
+        }}
+      >
+        Et toi ?
+        <br />
+        Quel est ton rêve ?
+      </h2>
 
-
-
-      {/* Input */}
       <input
         type="text"
         value={dream}
@@ -80,9 +79,9 @@ export function DreamAI() {
           outline: 'none',
           marginBottom: '1.5rem',
         }}
+        onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
       />
 
-      {/* Bouton */}
       <button
         onClick={handleSubmit}
         disabled={loading}
@@ -99,21 +98,31 @@ export function DreamAI() {
           marginBottom: '1.5rem',
         }}
       >
-        {loading ? '…' : 'CONFIER'}
+        {loading ? '✨ L\'IA réfléchit…' : 'CONFIER À L\'IA'}
       </button>
 
-      {/* Réponse */}
       {response && (
-        <p
-          className="animate-fadeIn"
-          style={{
-            marginTop: '1.5rem',
-            color: 'var(--text-medium)',
-            fontStyle: 'italic',
-          }}
-        >
-          “{response}”
-        </p>
+        <div className="animate-fadeIn">
+          <p
+            style={{
+              marginTop: '1.5rem',
+              color: 'var(--text-medium)',
+              fontStyle: 'italic',
+              fontSize: '1.1rem',
+              lineHeight: 1.6,
+            }}
+          >
+            ✨ {response} ✨
+          </p>
+          <p style={{ 
+            marginTop: '0.5rem', 
+            fontSize: '0.75rem', 
+            opacity: 0.5,
+            fontStyle: 'italic'
+          }}>
+            Réponse générée par intelligence artificielle
+          </p>
+        </div>
       )}
     </div>
   );
