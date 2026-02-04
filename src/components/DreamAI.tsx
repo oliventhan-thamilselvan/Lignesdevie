@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 // URL de votre backend (changez si nécessaire)
-const BACKEND_URL = 'http://localhost:3001';
+const BACKEND_URL = 'http://localhost:5001';
 
 export function DreamAI() {
   const [dream, setDream] = useState('');
