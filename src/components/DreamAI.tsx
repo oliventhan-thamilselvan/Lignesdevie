@@ -1,8 +1,5 @@
 import { useState } from 'react';
 
-// URL de votre backend (changez si nécessaire)
-const BACKEND_URL = 'http://localhost:5001';
-
 export function DreamAI() {
   const [dream, setDream] = useState('');
   const [response, setResponse] = useState<string | null>(null);
@@ -15,7 +12,7 @@ export function DreamAI() {
     setResponse(null);
 
     try {
-      const res = await fetch(`${BACKEND_URL}/api/dream`, {
+      const res = await fetch('/api/dream', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
